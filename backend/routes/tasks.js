@@ -65,7 +65,10 @@ router.put("/:id", async (req, res) => {
     }
 
     if (req.body.completed !== undefined) {
-      updates.completed = Boolean(req.body.completed);
+      if (typeof req.body.completed !== "boolean") {
+  return res.status(400).json({ message: "Completed must be a boolean" });
+}
+updates.completed = req.body.completed;
     }
 
     if (Object.keys(updates).length === 0) {
