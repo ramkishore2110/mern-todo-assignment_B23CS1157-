@@ -29,7 +29,7 @@ export default function App() {
       const newTask = await createTask(title);
       // Put the new task at the top. A NEW array is made with the spread
       // operator - React only re-renders when the array identity changes.
-      setTasks([newTask, ...tasks]);
+    	setTasks((prev) => [newTask, ...prev]);
       setError("");
       return true;
     } catch (err) {
@@ -43,7 +43,9 @@ export default function App() {
     try {
       const updated = await updateTask(task._id, { completed: !task.completed });
       // Replace just the one task that changed, keep the rest as they are.
-      setTasks(tasks.map((t) => (t._id === updated._id ? updated : t)));
+      setTasks((prev) =>
+  prev.map((t) => (t._id === updated._id ? updated : t))
+);
       setError("");
     } catch (err) {
       setError(err.message);
@@ -55,7 +57,9 @@ export default function App() {
     try {
       await deleteTask(id);
       // filter() returns a new array without that task
-      setTasks(tasks.filter((t) => t._id !== id));
+    setTasks((prev) =>
+  prev.map((t) => (t._id === updated._id ? updated : t))
+);
       setError("");
     } catch (err) {
       setError(err.message);
